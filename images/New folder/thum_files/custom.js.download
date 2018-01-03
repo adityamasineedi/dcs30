@@ -1,0 +1,199 @@
+$.noConflict();
+var $ = jQuery;
+
+
+$(document).ready(function($) {
+    /***/
+
+    $(".fullwidth-slider").owlCarousel({
+      navigation: false,
+      slideSpeed: 500,
+      paginationSpeed: 400,
+      singleItem: true,
+      transitionStyle: "fade",
+      autoPlay: true
+    });
+    $(".event-slider").owlCarousel({
+         navigation: true,
+      pagination:false,
+      slideSpeed: 500,
+      paginationSpeed: 400,
+      singleItem: true,
+      transitionStyle: "fade",
+      autoPlay: false,
+      navigationText: [
+      "<i class='fa fa-angle-left'></i>",
+      "<i class='fa fa-angle-right'></i>"
+      ],
+    });
+     $('#ftabs').responsiveTabs({
+        startCollapsed: 'accordion',
+        active: 0
+    });
+     $('#stabs').responsiveTabs({
+        startCollapsed: 'accordion',
+         active: 0
+    });
+    $('#ftabs').responsiveTabs('activate', 0);
+    $('#stabs').responsiveTabs('activate', 0);
+    $( '.swipebox' ).swipebox();
+    $( '.swipebox-video' ).swipebox({autoplayVideos: false});
+
+
+
+    window.sr = new ScrollReveal()
+    var block = {
+        reset: true,
+      }
+      sr.reveal(".foo", block, 20)
+ 
+
+    //set equalize height
+    equalheight = function(container){
+
+    var currentTallest = 0,
+         currentRowStart = 0,
+         rowDivs = new Array(),
+         $el,
+         topPosition = 0;
+     $(container).each(function() {
+
+       $el = $(this);
+       $($el).height('auto')
+       topPostion = $el.position().top;
+
+       if (currentRowStart != topPostion) {
+         for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+           rowDivs[currentDiv].height(currentTallest);
+         }
+         rowDivs.length = 0; // empty the array
+         currentRowStart = topPostion;
+         currentTallest = $el.height();
+         rowDivs.push($el);
+       } else {
+         rowDivs.push($el);
+         currentTallest = (currentTallest < $el.height()) ? ($el.height()) : (currentTallest);
+      }
+       for (currentDiv = 0 ; currentDiv < rowDivs.length ; currentDiv++) {
+         rowDivs[currentDiv].height(currentTallest);
+       }
+     });
+    }
+
+    $(window).load(function() {
+      equalheight('.equalize');
+    });
+
+
+    /* smooth-scrolling */
+    $(function() {
+        $('.scrollbtn a[href*="#"]:not([href="#"])').on('click', function() {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+                    if ($(window).width() > 1169) {
+                        $('html, body').animate({
+                            scrollTop: target.offset().top - 72
+                        }, 1000);
+                        return false;
+                    } else {
+                        $('html, body').delay(200).animate({
+                            scrollTop: target.offset().top - 72
+                        }, 1000);
+                        return false;
+                    }
+                }
+            }
+        });
+    });
+
+    //  NAVBAR CLOSE ICON 
+    $(".navbar-toggle").on("click", function() {
+        $(this).toggleClass("active");
+        $("#main-header").toggleClass("open-nav");
+        $(".owl-controls").toggleClass("owl-control-index");
+    });
+
+    if ($(window).width() > 1024) {
+        new WOW().init();
+    };
+
+    $('#image-gallery').lightSlider({
+                gallery:true,
+                item:1,
+                thumbItem:4,
+                slideMargin: 30,
+                thumbMargin: 30,
+                speed:500,
+                auto:false,
+                loop:true,
+                onSliderLoad: function() {
+                    $('#image-gallery').removeClass('cS-hidden');
+                }  
+            });
+
+    /* responsive menu */
+    $('.responsive-menu-btn').on('click', function() {
+        $('#main-header').toggleClass('open-nav');
+        $('body').toggleClass('hidden');
+    });
+
+    $('#main-header nav ul li a').on('click', function() {
+        $('#main-header').removeClass('open-nav');
+        $('.navbar-toggle').removeClass('active');
+        $('.navbar-collapse').removeClass('in');
+        $('body').removeClass('hidden');
+    });
+
+    $('.responsive-menu-btn span').bind("touchmove touchstart", function(event) {
+        if ($('#main-header').hasClass('open-nav')) {
+            event.preventDefault();
+            $('#main-header').toggleClass('open-nav');
+            $('body').toggleClass('hidden');
+        }
+    });
+   
+    // menu active js//
+    $('#main-menu ul li a').click(function(e) {
+        $('#main-menu ul li').removeClass('active');
+        var $parent = $(this).parent();
+        if (!$parent.hasClass('active')) {
+            $parent.addClass('active');
+        }
+        e.preventDefault();
+    });
+
+
+
+    // Back To top Js
+    var offset = 300,
+        offset_opacity = 1200,
+        scroll_top_duration = 700,
+        $back_to_top = $('.back-to-top');
+
+    $(window).scroll(function(){
+
+        ( $(this).scrollTop() > offset ) ? $back_to_top.addClass('cd-is-visible') : $back_to_top.removeClass('cd-is-visible cd-fade-out');
+        if( $(this).scrollTop() > offset_opacity ) { 
+            $back_to_top.addClass('cd-fade-out');
+        }
+
+        var scroll = $(window).scrollTop();
+        if (scroll >= 50) {
+            $("#main-header").addClass("darkHeader");
+        } else {
+            $("#main-header").removeClass("darkHeader");
+        }
+
+    });
+
+    $back_to_top.on('click', function(event){
+        event.preventDefault();
+        $('body,html').animate({
+            scrollTop: 0 ,
+            }, scroll_top_duration
+        );
+    });
+
+});
